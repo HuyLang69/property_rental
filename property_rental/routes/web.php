@@ -13,3 +13,11 @@ Route::get('/login', function () {
 Route::get('/register', function () {
     return view('register');
 });
+
+Route::get('/listings', function () {
+    return view('listings.index');
+});
+
+Route::get('/listings/{id}', function ($id) {
+    return view('listings.show');
+});
