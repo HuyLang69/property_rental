@@ -31,7 +31,7 @@
             <p class="text-sm text-[#a8a8a8] mb-7">Log in to your account to continue.</p>
 
             {{-- DYNAMIC: form action points to your login route, add @csrf --}}
-            <form action="{{ url('/login') }}" method="POST" class="flex flex-col gap-5">
+            <form action="{{ route('login') }}" method="POST" class="flex flex-col gap-5">
                 @csrf
 
                 {{-- Email --}}
@@ -53,7 +53,7 @@
                 <div class="flex flex-col gap-1.5">
                     <div class="flex items-center justify-between">
                         <label for="password" class="text-xs font-medium text-[#5c5c5c] uppercase tracking-widest">Password</label>
-                        <a href="{{ url('/forgot-password') }}" class="text-xs text-[#a8a8a8] hover:text-[#111] transition-colors">Forgot password?</a>
+                        <a href="{{ url('/forgot-password') }}" tabindex="-1" class="text-xs text-[#a8a8a8] hover:text-[#111] transition-colors">Forgot password?</a>
                     </div>
                     <input autocomplete="off"
                         id="password" type="password" name="password" required
@@ -81,7 +81,7 @@
 
         <p class="text-center text-sm text-[#a8a8a8] mt-6">
             Don't have an account?
-            <a href="{{ url('/register') }}" class="text-[#111] font-medium hover:underline">Sign up</a>
+            <a href="{{ route('register') }}" class="text-[#111] font-medium hover:underline">Sign up</a>
         </p>
 
     </div>

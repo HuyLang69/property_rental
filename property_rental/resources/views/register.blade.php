@@ -31,7 +31,7 @@
             <p class="text-sm text-[#a8a8a8] mb-7">One account to rent and host — do both, anytime.</p>
 
             {{-- DYNAMIC: form action points to your register route, add @csrf --}}
-            <form action="{{ url('/register') }}" method="POST" class="flex flex-col gap-5">
+            <form action="{{ route('register') }}" method="POST" class="flex flex-col gap-5">
                 @csrf
 
                 {{-- Name row --}}
@@ -120,7 +120,7 @@
 
         <p class="text-center text-sm text-[#a8a8a8] mt-6">
             Already have an account?
-            <a href="{{ url('/login') }}" class="text-[#111] font-medium hover:underline">Log in</a>
+            <a href="{{ route('login') }}" class="text-[#111] font-medium hover:underline">Log in</a>
         </p>
 
     </div>

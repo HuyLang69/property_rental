@@ -75,7 +75,7 @@
                     <svg class="w-4 h-4 text-silver shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z"/>
                     </svg>
-                    <input autocomplete="off" type="text" name="search" placeholder="City, neighbourhood…"
+                    <input type="text" name="search" placeholder="City, neighbourhood…"
                            class="flex-1 bg-transparent text-sm text-ink placeholder-silver outline-none min-w-0" />
                     <button type="submit" class="bg-ink text-white text-xs font-semibold rounded-full px-3 py-1 hover:bg-carbon transition-colors shrink-0">
                         Go
@@ -87,11 +87,19 @@
                     <a href="{{ url('/host') }}"     class="nav-link hover:text-ink transition-colors">Host</a>
                     <div class="w-px h-4 bg-fog mx-1"></div>
 
-                    {{-- DYNAMIC: replace with @auth / @guest when auth is set up --}}
-                    <a href="{{ url('/login') }}" class="hover:text-ink transition-colors">Log in</a>
-                    <a href="{{ url('/register') }}" class="bg-ink text-white rounded-full px-5 py-2 text-sm font-medium hover:bg-carbon transition-colors">
-                        Sign up
-                    </a>
+                    @guest
+                        <a href="{{ route('login') }}" class="hover:text-ink transition-colors">Log in</a>
+                        <a href="{{ route('register') }}" class="bg-ink text-white rounded-full px-5 py-2 text-sm font-medium hover:bg-carbon transition-colors">
+                            Sign up
+                        </a>
+                    @endguest
+
+                    @auth
+                        <span class="text-sm text-slate">Hi, {{ Auth::user()->first_name }}</span>
+                        <a href="{{ route('logout') }}" class="bg-ink text-white rounded-full px-5 py-2 text-sm font-medium hover:bg-carbon transition-colors">
+                            Log out
+                        </a>
+                    @endauth
                 </nav>
 
                 <button id="mob-toggle" class="md:hidden p-2 rounded-lg hover:bg-fog transition-colors" aria-label="Menu">
@@ -107,16 +115,27 @@
                 <svg class="w-4 h-4 text-silver shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z"/>
                 </svg>
-                <input autocomplete="off" type="text" name="search" placeholder="Search…" class="flex-1 bg-transparent text-sm placeholder-silver outline-none" />
+                <input type="text" name="search" placeholder="Search…" class="flex-1 bg-transparent text-sm placeholder-silver outline-none" />
             </form>
             <nav class="flex flex-col gap-3 text-sm font-medium text-slate">
                 <a href="{{ url('/listings') }}" class="hover:text-ink py-1 transition-colors">Browse</a>
                 <a href="{{ url('/host') }}"     class="hover:text-ink py-1 transition-colors">Host</a>
             </nav>
-            <div class="flex gap-2">
-                <a href="{{ url('/login') }}"    class="flex-1 text-center border border-fog rounded-full py-2 text-sm font-medium hover:border-silver transition-colors">Log in</a>
-                <a href="{{ url('/register') }}" class="flex-1 text-center bg-ink text-white rounded-full py-2 text-sm font-medium hover:bg-carbon transition-colors">Sign up</a>
-            </div>
+            @guest
+                <div class="flex gap-2">
+                    <a href="{{ route('login') }}"    class="flex-1 text-center border border-fog rounded-full py-2 text-sm font-medium hover:border-silver transition-colors">Log in</a>
+                    <a href="{{ route('register') }}" class="flex-1 text-center bg-ink text-white rounded-full py-2 text-sm font-medium hover:bg-carbon transition-colors">Sign up</a>
+                </div>
+            @endguest
+
+            @auth
+                <div class="flex gap-2 items-center">
+                    <span class="flex-1 text-sm text-slate">Hi, {{ Auth::user()->first_name }}</span>
+                    <a href="{{ route('logout') }}" class="flex-1 text-center bg-ink text-white rounded-full py-2 text-sm font-medium hover:bg-carbon transition-colors">
+                        Log out
+                    </a>
+                </div>
+            @endauth
         </div>
     </header>
 

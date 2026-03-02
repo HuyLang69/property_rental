@@ -9,9 +9,7 @@
 ============================================================ --}}
 <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-ink">
 
-    {{-- Background collage --}}
     <div class="absolute inset-0 grid grid-cols-3 opacity-25 pointer-events-none">
-        {{-- DYNAMIC: swap these for real property images, e.g. {{ asset('images/hero-1.jpg') }} --}}
         <div class="col-span-2 bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=900&q=80')"></div>
         <div class="flex flex-col">
             <div class="flex-1 bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=500&q=80')"></div>
@@ -32,15 +30,14 @@
             Thousands of unique homes, apartments, and studios — ready for your next stay.
         </p>
 
-        {{-- DYNAMIC: form action points to your listings search/filter route --}}
-        <form action="{{ url('/listings') }}" method="GET"
+        <form action="{{ route('listings.index') }}" method="GET"
               class="fade-up d4 bg-white rounded-2xl shadow-2xl p-2 flex flex-col sm:flex-row items-stretch gap-2 max-w-2xl mx-auto">
 
             <div class="flex items-center gap-3 flex-1 px-4 py-2">
                 <svg class="w-4 h-4 text-silver shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0zM15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
-                <input autocomplete="off" type="text" name="location" placeholder="Where are you going?"
+                <input autocomplete="off" type="text" name="search" placeholder="Where are you going?"
                        class="text-sm text-ink placeholder-silver outline-none w-full bg-transparent" />
             </div>
 
@@ -67,13 +64,12 @@
             </button>
         </form>
 
-        {{-- DYNAMIC: popular city links — could be pulled from most-searched locations in DB --}}
         <div class="fade-up d5 flex flex-wrap justify-center gap-2 mt-6">
-            <a href="{{ url('/listings?location=Lisbon') }}"  class="text-xs text-silver border border-white/20 rounded-full px-3 py-1 hover:bg-white/10 transition-colors">Lisbon</a>
-            <a href="{{ url('/listings?location=Porto') }}"   class="text-xs text-silver border border-white/20 rounded-full px-3 py-1 hover:bg-white/10 transition-colors">Porto</a>
-            <a href="{{ url('/listings?location=Lagos') }}"   class="text-xs text-silver border border-white/20 rounded-full px-3 py-1 hover:bg-white/10 transition-colors">Lagos</a>
-            <a href="{{ url('/listings?location=Sintra') }}"  class="text-xs text-silver border border-white/20 rounded-full px-3 py-1 hover:bg-white/10 transition-colors">Sintra</a>
-            <a href="{{ url('/listings?location=Cascais') }}" class="text-xs text-silver border border-white/20 rounded-full px-3 py-1 hover:bg-white/10 transition-colors">Cascais</a>
+            <a href="{{ route('listings.index', ['search' => 'Lisbon']) }}"  class="text-xs text-silver border border-white/20 rounded-full px-3 py-1 hover:bg-white/10 transition-colors">Lisbon</a>
+            <a href="{{ route('listings.index', ['search' => 'Porto']) }}"   class="text-xs text-silver border border-white/20 rounded-full px-3 py-1 hover:bg-white/10 transition-colors">Porto</a>
+            <a href="{{ route('listings.index', ['search' => 'Lagos']) }}"   class="text-xs text-silver border border-white/20 rounded-full px-3 py-1 hover:bg-white/10 transition-colors">Lagos</a>
+            <a href="{{ route('listings.index', ['search' => 'Sintra']) }}"  class="text-xs text-silver border border-white/20 rounded-full px-3 py-1 hover:bg-white/10 transition-colors">Sintra</a>
+            <a href="{{ route('listings.index', ['search' => 'Cascais']) }}" class="text-xs text-silver border border-white/20 rounded-full px-3 py-1 hover:bg-white/10 transition-colors">Cascais</a>
         </div>
     </div>
 
@@ -94,15 +90,14 @@
             <p class="text-xs uppercase tracking-widest text-silver mb-1">Browse by type</p>
             <h2 class="font-display text-3xl sm:text-4xl font-bold tracking-tight">What kind of stay?</h2>
         </div>
-        <a href="{{ url('/listings') }}" class="hidden sm:flex items-center gap-1 text-sm font-medium text-slate hover:text-ink transition-colors">
+        <a href="{{ route('listings.index') }}" class="hidden sm:flex items-center gap-1 text-sm font-medium text-slate hover:text-ink transition-colors">
             View all <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
         </a>
     </div>
 
-    {{-- DYNAMIC: these filter links map to your listing type parameter --}}
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
 
-        <a href="{{ url('/listings?type=apartment') }}" class="lift group flex flex-col items-center justify-center gap-3 bg-white border border-fog rounded-2xl py-7 px-4 text-center hover:border-ink transition-colors">
+        <a href="{{ route('listings.index', ['type' => 'apartment']) }}" class="lift group flex flex-col items-center justify-center gap-3 bg-white border border-fog rounded-2xl py-7 px-4 text-center hover:border-ink transition-colors">
             <div class="w-11 h-11 rounded-full bg-cream group-hover:bg-ink flex items-center justify-center transition-colors">
                 <svg class="w-5 h-5 text-ink group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h4v-5a1 1 0 011-1h4a1 1 0 011 1v5h4a1 1 0 001-1V10"/>
@@ -111,7 +106,7 @@
             <span class="text-sm font-medium">Apartment</span>
         </a>
 
-        <a href="{{ url('/listings?type=house') }}" class="lift group flex flex-col items-center justify-center gap-3 bg-white border border-fog rounded-2xl py-7 px-4 text-center hover:border-ink transition-colors">
+        <a href="{{ route('listings.index', ['type' => 'house']) }}" class="lift group flex flex-col items-center justify-center gap-3 bg-white border border-fog rounded-2xl py-7 px-4 text-center hover:border-ink transition-colors">
             <div class="w-11 h-11 rounded-full bg-cream group-hover:bg-ink flex items-center justify-center transition-colors">
                 <svg class="w-5 h-5 text-ink group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955a1.5 1.5 0 012.092 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75"/>
@@ -120,7 +115,7 @@
             <span class="text-sm font-medium">House</span>
         </a>
 
-        <a href="{{ url('/listings?type=studio') }}" class="lift group flex flex-col items-center justify-center gap-3 bg-white border border-fog rounded-2xl py-7 px-4 text-center hover:border-ink transition-colors">
+        <a href="{{ route('listings.index', ['type' => 'studio']) }}" class="lift group flex flex-col items-center justify-center gap-3 bg-white border border-fog rounded-2xl py-7 px-4 text-center hover:border-ink transition-colors">
             <div class="w-11 h-11 rounded-full bg-cream group-hover:bg-ink flex items-center justify-center transition-colors">
                 <svg class="w-5 h-5 text-ink group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 018.25 20.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25A2.25 2.25 0 0113.5 8.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"/>
@@ -129,7 +124,7 @@
             <span class="text-sm font-medium">Studio</span>
         </a>
 
-        <a href="{{ url('/listings?type=villa') }}" class="lift group flex flex-col items-center justify-center gap-3 bg-white border border-fog rounded-2xl py-7 px-4 text-center hover:border-ink transition-colors">
+        <a href="{{ route('listings.index', ['type' => 'villa']) }}" class="lift group flex flex-col items-center justify-center gap-3 bg-white border border-fog rounded-2xl py-7 px-4 text-center hover:border-ink transition-colors">
             <div class="w-11 h-11 rounded-full bg-cream group-hover:bg-ink flex items-center justify-center transition-colors">
                 <svg class="w-5 h-5 text-ink group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205l3 1m1.5.5l-1.5-.5M6.75 7.364V3h-3v18m3-13.636l10.5-3.819"/>
@@ -138,7 +133,7 @@
             <span class="text-sm font-medium">Villa</span>
         </a>
 
-        <a href="{{ url('/listings?type=room') }}" class="lift group flex flex-col items-center justify-center gap-3 bg-white border border-fog rounded-2xl py-7 px-4 text-center hover:border-ink transition-colors">
+        <a href="{{ route('listings.index', ['type' => 'room']) }}" class="lift group flex flex-col items-center justify-center gap-3 bg-white border border-fog rounded-2xl py-7 px-4 text-center hover:border-ink transition-colors">
             <div class="w-11 h-11 rounded-full bg-cream group-hover:bg-ink flex items-center justify-center transition-colors">
                 <svg class="w-5 h-5 text-ink group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"/>
@@ -152,9 +147,7 @@
 
 
 {{-- ============================================================
-     FEATURED LISTINGS
-     DYNAMIC: replace static cards with @foreach ($featuredListings as $listing)
-     Pass from controller: return view('home', ['featuredListings' => Listing::take(6)->get()]);
+     FEATURED LISTINGS — from DB, ordered by rating
 ============================================================ --}}
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     <div class="flex items-center justify-between mb-10">
@@ -162,192 +155,50 @@
             <p class="text-xs uppercase tracking-widest text-silver mb-1">Handpicked for you</p>
             <h2 class="font-display text-3xl sm:text-4xl font-bold tracking-tight">Featured stays</h2>
         </div>
-        <a href="{{ url('/listings') }}" class="hidden sm:flex items-center gap-1 text-sm font-medium text-slate hover:text-ink transition-colors">
+        <a href="{{ route('listings.index') }}" class="hidden sm:flex items-center gap-1 text-sm font-medium text-slate hover:text-ink transition-colors">
             See all <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
         </a>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-
-        {{-- ── CARD 1 ── --}}
-        {{-- DYNAMIC: href="{{ route('listings.show', $listing->id) }}", all values from $listing --}}
-        <a href="/listings/1" class="lift group bg-white rounded-2xl overflow-hidden border border-fog flex flex-col">
+        @foreach ($featured as $listing)
+        <a href="{{ route('listings.show', $listing->id) }}" class="lift group bg-white rounded-2xl overflow-hidden border border-fog flex flex-col">
             <div class="img-zoom relative" style="aspect-ratio:4/3;">
-                <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&q=80" alt="Modern Loft in Bairro Alto" class="w-full h-full object-cover" loading="lazy" />
-                <span class="absolute top-3 left-3 bg-ink/75 backdrop-blur-sm text-white text-[10px] uppercase tracking-widest font-semibold rounded-full px-2.5 py-1">Apartment</span>
-                <button class="absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-colors" aria-label="Save">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-                </button>
+                @if ($listing->coverImage)
+                    <img src="{{ $listing->coverImage->path }}" alt="{{ $listing->title }}" class="w-full h-full object-cover" loading="lazy" />
+                @else
+                    <div class="w-full h-full bg-fog flex items-center justify-center">
+                        <svg class="w-10 h-10 text-silver" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909"/></svg>
+                    </div>
+                @endif
+                <span class="absolute top-3 left-3 bg-ink/75 backdrop-blur-sm text-white text-[10px] uppercase tracking-widest font-semibold rounded-full px-2.5 py-1">{{ $listing->type }}</span>
             </div>
             <div class="flex flex-col flex-1 p-5 gap-3">
                 <div class="flex items-start justify-between gap-2">
                     <div class="flex-1 min-w-0">
-                        <h3 class="font-semibold text-ink text-[0.95rem] leading-snug truncate">Modern Loft in Bairro Alto</h3>
-                        <p class="text-xs text-silver mt-0.5">Lisbon</p>
+                        <h3 class="font-semibold text-ink text-[0.95rem] leading-snug truncate">{{ $listing->title }}</h3>
+                        <p class="text-xs text-silver mt-0.5">{{ $listing->city }}, {{ $listing->country }}</p>
                     </div>
+                    @if ($listing->reviews_avg_rating)
                     <div class="flex items-center gap-1 shrink-0">
                         <svg class="w-3.5 h-3.5 text-ink" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                        <span class="text-xs font-semibold">4.9</span>
-                        <span class="text-xs text-silver">(38)</span>
+                        <span class="text-xs font-semibold text-ink">{{ number_format($listing->reviews_avg_rating, 1) }}</span>
+                        <span class="text-xs text-silver">({{ $listing->reviews->count() }})</span>
                     </div>
+                    @endif
                 </div>
-                <p class="text-xs text-slate">1 bed &middot; Entire place &middot; Wi-Fi</p>
+                <p class="text-xs text-slate">{{ $listing->bedrooms }} bed{{ $listing->bedrooms > 1 ? 's' : '' }} &middot; Up to {{ $listing->max_guests }} guests</p>
                 <div class="mt-auto flex items-center justify-between">
-                    <p><span class="text-base font-bold">$85</span><span class="text-xs text-silver font-normal"> / night</span></p>
+                    <p><span class="text-base font-bold">${{ number_format($listing->price_per_night / 100, 0) }}</span><span class="text-xs text-silver font-normal"> / night</span></p>
                     <span class="text-xs font-medium border border-fog rounded-full px-3 py-1 group-hover:bg-ink group-hover:text-white group-hover:border-ink transition-colors">View &rarr;</span>
                 </div>
             </div>
         </a>
-
-        {{-- ── CARD 2 ── --}}
-        <a href="/listings/2" class="lift group bg-white rounded-2xl overflow-hidden border border-fog flex flex-col">
-            <div class="img-zoom relative" style="aspect-ratio:4/3;">
-                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80" alt="Beachfront Villa with Pool" class="w-full h-full object-cover" loading="lazy" />
-                <span class="absolute top-3 left-3 bg-ink/75 backdrop-blur-sm text-white text-[10px] uppercase tracking-widest font-semibold rounded-full px-2.5 py-1">Villa</span>
-                <button class="absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-colors" aria-label="Save">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-                </button>
-            </div>
-            <div class="flex flex-col flex-1 p-5 gap-3">
-                <div class="flex items-start justify-between gap-2">
-                    <div class="flex-1 min-w-0">
-                        <h3 class="font-semibold text-ink text-[0.95rem] leading-snug truncate">Beachfront Villa with Pool</h3>
-                        <p class="text-xs text-silver mt-0.5">Lagos</p>
-                    </div>
-                    <div class="flex items-center gap-1 shrink-0">
-                        <svg class="w-3.5 h-3.5 text-ink" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                        <span class="text-xs font-semibold">5.0</span>
-                        <span class="text-xs text-silver">(21)</span>
-                    </div>
-                </div>
-                <p class="text-xs text-slate">4 beds &middot; Entire place &middot; Pool</p>
-                <div class="mt-auto flex items-center justify-between">
-                    <p><span class="text-base font-bold">$230</span><span class="text-xs text-silver font-normal"> / night</span></p>
-                    <span class="text-xs font-medium border border-fog rounded-full px-3 py-1 group-hover:bg-ink group-hover:text-white group-hover:border-ink transition-colors">View &rarr;</span>
-                </div>
-            </div>
-        </a>
-
-        {{-- ── CARD 3 ── --}}
-        <a href="/listings/3" class="lift group bg-white rounded-2xl overflow-hidden border border-fog flex flex-col">
-            <div class="img-zoom relative" style="aspect-ratio:4/3;">
-                <img src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=600&q=80" alt="Cosy Studio near the River" class="w-full h-full object-cover" loading="lazy" />
-                <span class="absolute top-3 left-3 bg-ink/75 backdrop-blur-sm text-white text-[10px] uppercase tracking-widest font-semibold rounded-full px-2.5 py-1">Studio</span>
-                <button class="absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-colors" aria-label="Save">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-                </button>
-            </div>
-            <div class="flex flex-col flex-1 p-5 gap-3">
-                <div class="flex items-start justify-between gap-2">
-                    <div class="flex-1 min-w-0">
-                        <h3 class="font-semibold text-ink text-[0.95rem] leading-snug truncate">Cosy Studio near the River</h3>
-                        <p class="text-xs text-silver mt-0.5">Porto</p>
-                    </div>
-                    <div class="flex items-center gap-1 shrink-0">
-                        <svg class="w-3.5 h-3.5 text-ink" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                        <span class="text-xs font-semibold">4.7</span>
-                        <span class="text-xs text-silver">(64)</span>
-                    </div>
-                </div>
-                <p class="text-xs text-slate">1 bed &middot; Entire place &middot; Wi-Fi</p>
-                <div class="mt-auto flex items-center justify-between">
-                    <p><span class="text-base font-bold">$55</span><span class="text-xs text-silver font-normal"> / night</span></p>
-                    <span class="text-xs font-medium border border-fog rounded-full px-3 py-1 group-hover:bg-ink group-hover:text-white group-hover:border-ink transition-colors">View &rarr;</span>
-                </div>
-            </div>
-        </a>
-
-        {{-- ── CARD 4 ── --}}
-        <a href="/listings/4" class="lift group bg-white rounded-2xl overflow-hidden border border-fog flex flex-col">
-            <div class="img-zoom relative" style="aspect-ratio:4/3;">
-                <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=80" alt="Historic Townhouse" class="w-full h-full object-cover" loading="lazy" />
-                <span class="absolute top-3 left-3 bg-ink/75 backdrop-blur-sm text-white text-[10px] uppercase tracking-widest font-semibold rounded-full px-2.5 py-1">House</span>
-                <button class="absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-colors" aria-label="Save">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-                </button>
-            </div>
-            <div class="flex flex-col flex-1 p-5 gap-3">
-                <div class="flex items-start justify-between gap-2">
-                    <div class="flex-1 min-w-0">
-                        <h3 class="font-semibold text-ink text-[0.95rem] leading-snug truncate">Historic Townhouse, Old Town</h3>
-                        <p class="text-xs text-silver mt-0.5">Sintra</p>
-                    </div>
-                    <div class="flex items-center gap-1 shrink-0">
-                        <svg class="w-3.5 h-3.5 text-ink" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                        <span class="text-xs font-semibold">4.8</span>
-                        <span class="text-xs text-silver">(17)</span>
-                    </div>
-                </div>
-                <p class="text-xs text-slate">3 beds &middot; Entire place &middot; Parking</p>
-                <div class="mt-auto flex items-center justify-between">
-                    <p><span class="text-base font-bold">$140</span><span class="text-xs text-silver font-normal"> / night</span></p>
-                    <span class="text-xs font-medium border border-fog rounded-full px-3 py-1 group-hover:bg-ink group-hover:text-white group-hover:border-ink transition-colors">View &rarr;</span>
-                </div>
-            </div>
-        </a>
-
-        {{-- ── CARD 5 ── --}}
-        <a href="/listings/5" class="lift group bg-white rounded-2xl overflow-hidden border border-fog flex flex-col">
-            <div class="img-zoom relative" style="aspect-ratio:4/3;">
-                <img src="https://images.unsplash.com/photo-1505691723518-36a5ac3be353?w=600&q=80" alt="Bright Apartment, Sea View" class="w-full h-full object-cover" loading="lazy" />
-                <span class="absolute top-3 left-3 bg-ink/75 backdrop-blur-sm text-white text-[10px] uppercase tracking-widest font-semibold rounded-full px-2.5 py-1">Apartment</span>
-                <button class="absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-colors" aria-label="Save">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-                </button>
-            </div>
-            <div class="flex flex-col flex-1 p-5 gap-3">
-                <div class="flex items-start justify-between gap-2">
-                    <div class="flex-1 min-w-0">
-                        <h3 class="font-semibold text-ink text-[0.95rem] leading-snug truncate">Bright Apartment, Sea View</h3>
-                        <p class="text-xs text-silver mt-0.5">Cascais</p>
-                    </div>
-                    <div class="flex items-center gap-1 shrink-0">
-                        <svg class="w-3.5 h-3.5 text-ink" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                        <span class="text-xs font-semibold">4.9</span>
-                        <span class="text-xs text-silver">(44)</span>
-                    </div>
-                </div>
-                <p class="text-xs text-slate">2 beds &middot; Entire place &middot; Wi-Fi</p>
-                <div class="mt-auto flex items-center justify-between">
-                    <p><span class="text-base font-bold">$110</span><span class="text-xs text-silver font-normal"> / night</span></p>
-                    <span class="text-xs font-medium border border-fog rounded-full px-3 py-1 group-hover:bg-ink group-hover:text-white group-hover:border-ink transition-colors">View &rarr;</span>
-                </div>
-            </div>
-        </a>
-
-        {{-- ── CARD 6 ── --}}
-        <a href="/listings/6" class="lift group bg-white rounded-2xl overflow-hidden border border-fog flex flex-col">
-            <div class="img-zoom relative" style="aspect-ratio:4/3;">
-                <img src="https://images.unsplash.com/photo-1449844908441-8829872d2607?w=600&q=80" alt="Rustic Farmhouse Retreat" class="w-full h-full object-cover" loading="lazy" />
-                <span class="absolute top-3 left-3 bg-ink/75 backdrop-blur-sm text-white text-[10px] uppercase tracking-widest font-semibold rounded-full px-2.5 py-1">House</span>
-                <button class="absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-colors" aria-label="Save">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-                </button>
-            </div>
-            <div class="flex flex-col flex-1 p-5 gap-3">
-                <div class="flex items-start justify-between gap-2">
-                    <div class="flex-1 min-w-0">
-                        <h3 class="font-semibold text-ink text-[0.95rem] leading-snug truncate">Rustic Farmhouse Retreat</h3>
-                        <p class="text-xs text-silver mt-0.5">Alentejo</p>
-                    </div>
-                    <div class="flex items-center gap-1 shrink-0">
-                        <svg class="w-3.5 h-3.5 text-ink" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                        <span class="text-xs font-semibold">4.6</span>
-                        <span class="text-xs text-silver">(9)</span>
-                    </div>
-                </div>
-                <p class="text-xs text-slate">5 beds &middot; Entire place &middot; Garden</p>
-                <div class="mt-auto flex items-center justify-between">
-                    <p><span class="text-base font-bold">$175</span><span class="text-xs text-silver font-normal"> / night</span></p>
-                    <span class="text-xs font-medium border border-fog rounded-full px-3 py-1 group-hover:bg-ink group-hover:text-white group-hover:border-ink transition-colors">View &rarr;</span>
-                </div>
-            </div>
-        </a>
-
+        @endforeach
     </div>
 
     <div class="sm:hidden mt-8 text-center">
-        <a href="{{ url('/listings') }}" class="inline-flex items-center gap-2 text-sm font-medium border border-fog rounded-full px-6 py-3 hover:border-ink transition-colors">
+        <a href="{{ route('listings.index') }}" class="inline-flex items-center gap-2 text-sm font-medium border border-fog rounded-full px-6 py-3 hover:border-ink transition-colors">
             See all listings &rarr;
         </a>
     </div>
@@ -356,8 +207,6 @@
 
 {{-- ============================================================
      STATS STRIP
-     DYNAMIC: replace hardcoded numbers with DB aggregates
-     e.g. Listing::count(), Listing::distinct('city')->count()
 ============================================================ --}}
 <section class="bg-white border-y border-fog py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -443,9 +292,51 @@
 
 
 {{-- ============================================================
-     HOST CTA BANNER
+     RECENT LISTINGS — from DB, ordered by newest
 ============================================================ --}}
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+<section class="bg-white border-t border-fog py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between mb-10">
+            <div>
+                <p class="text-xs uppercase tracking-widest text-silver mb-1">Just added</p>
+                <h2 class="font-display text-3xl sm:text-4xl font-bold tracking-tight">New arrivals</h2>
+            </div>
+            <a href="{{ route('listings.index', ['sort' => 'newest']) }}" class="hidden sm:flex items-center gap-1 text-sm font-medium text-slate hover:text-ink transition-colors">
+                See all new <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            @foreach ($recent as $listing)
+            <a href="{{ route('listings.show', $listing->id) }}" class="lift group bg-cream rounded-2xl overflow-hidden border border-fog flex flex-col">
+                <div class="img-zoom aspect-[4/3] bg-fog relative">
+                    @if ($listing->coverImage)
+                        <img src="{{ $listing->coverImage->path }}" alt="{{ $listing->title }}" class="w-full h-full object-cover" loading="lazy" />
+                    @else
+                        <div class="w-full h-full bg-fog flex items-center justify-center">
+                            <svg class="w-8 h-8 text-silver" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909"/></svg>
+                        </div>
+                    @endif
+                    <span class="absolute top-2 left-2 bg-ink text-white text-[9px] uppercase tracking-widest rounded-full px-2 py-0.5">New</span>
+                </div>
+                <div class="p-4 flex flex-col gap-1 flex-1">
+                    <h3 class="text-sm font-semibold text-ink leading-snug line-clamp-2 group-hover:text-carbon transition-colors">{{ $listing->title }}</h3>
+                    <p class="text-xs text-silver">{{ $listing->city }} &middot; {{ ucfirst($listing->type) }}</p>
+                    <p class="mt-auto pt-3 text-sm font-bold text-ink">
+                        ${{ number_format($listing->price_per_night / 100, 0) }}<span class="text-xs font-normal text-silver"> / night</span>
+                    </p>
+                </div>
+            </a>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+
+{{-- ============================================================
+     HOST CTA
+============================================================ --}}
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     <div class="bg-ink rounded-3xl px-8 sm:px-14 py-14 flex flex-col sm:flex-row items-center justify-between gap-8 relative overflow-hidden">
         <div class="absolute -top-16 -right-16 w-64 h-64 rounded-full border border-white/10 pointer-events-none"></div>
         <div class="absolute -bottom-10 right-20 w-36 h-36 rounded-full border border-white/10 pointer-events-none"></div>
@@ -458,33 +349,28 @@
             <a href="{{ url('/host') }}" class="bg-white text-ink font-semibold text-sm rounded-full px-8 py-3.5 hover:bg-fog transition-colors text-center">
                 Become a Host &rarr;
             </a>
-            <a href="{{ url('/host/how-it-works') }}" class="text-center text-sm text-silver hover:text-white transition-colors">
-                Learn how it works
-            </a>
         </div>
     </div>
 </section>
 
 @endsection
 
-
 @section('scripts')
 <script>
-    // Scroll-triggered fade-in for listing cards
     const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-                observer.unobserve(entry.target);
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.style.opacity = '1';
+                e.target.style.transform = 'translateY(0)';
+                observer.unobserve(e.target);
             }
         });
-    }, { threshold: 0.1 });
+    }, { threshold: 0.08 });
 
     document.querySelectorAll('.lift').forEach(card => {
         card.style.opacity = '0';
-        card.style.transform = 'translateY(16px)';
-        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease, box-shadow 0.28s ease';
+        card.style.transform = 'translateY(14px)';
+        card.style.transition = 'opacity 0.45s ease, transform 0.45s ease, box-shadow 0.28s ease';
         observer.observe(card);
     });
 </script>
