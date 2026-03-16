@@ -69,7 +69,6 @@
                     <span class="w-1.5 h-1.5 rounded-full bg-ink mb-0.5 group-hover:scale-150 transition-transform duration-200 inline-block"></span>
                 </a>
 
-                {{-- DYNAMIC: form action points to your listings search route --}}
                 <form action="{{ url('/listings') }}" method="GET"
                       class="hidden md:flex items-center flex-1 max-w-sm mx-4 bg-white border border-fog rounded-full px-4 py-2 gap-2 shadow-sm hover:shadow-md transition-shadow">
                     <svg class="w-4 h-4 text-silver shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -83,8 +82,7 @@
                 </form>
 
                 <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate">
-                    <a href="{{ url('/listings') }}" class="nav-link hover:text-ink transition-colors">Browse</a>
-                    <a href="{{ url('/host') }}"     class="nav-link hover:text-ink transition-colors">Host</a>
+                    <a href="{{ route('listings.index') }}" class="nav-link hover:text-ink transition-colors">Browse</a>
                     <div class="w-px h-4 bg-fog mx-1"></div>
 
                     @guest
@@ -95,7 +93,9 @@
                     @endguest
 
                     @auth
-                        <span class="text-sm text-slate">Hi, {{ Auth::user()->first_name }}</span>
+                        <a href="{{ route('dashboard') }}"    class="nav-link hover:text-ink transition-colors">Dashboard</a>
+                        <a href="{{ route('host.bookings') }}" class="nav-link hover:text-ink transition-colors">Host</a>
+                        <a href="{{ route('profile.edit') }}" class="nav-link hover:text-ink transition-colors">Profile</a>
                         <a href="{{ route('logout') }}" class="bg-ink text-white rounded-full px-5 py-2 text-sm font-medium hover:bg-carbon transition-colors">
                             Log out
                         </a>
@@ -118,9 +118,9 @@
                 <input type="text" name="search" placeholder="Search…" class="flex-1 bg-transparent text-sm placeholder-silver outline-none" />
             </form>
             <nav class="flex flex-col gap-3 text-sm font-medium text-slate">
-                <a href="{{ url('/listings') }}" class="hover:text-ink py-1 transition-colors">Browse</a>
-                <a href="{{ url('/host') }}"     class="hover:text-ink py-1 transition-colors">Host</a>
+                <a href="{{ route('listings.index') }}" class="hover:text-ink py-1 transition-colors">Browse</a>
             </nav>
+
             @guest
                 <div class="flex gap-2">
                     <a href="{{ route('login') }}"    class="flex-1 text-center border border-fog rounded-full py-2 text-sm font-medium hover:border-silver transition-colors">Log in</a>
@@ -129,11 +129,15 @@
             @endguest
 
             @auth
-                <div class="flex gap-2 items-center">
-                    <span class="flex-1 text-sm text-slate">Hi, {{ Auth::user()->first_name }}</span>
-                    <a href="{{ route('logout') }}" class="flex-1 text-center bg-ink text-white rounded-full py-2 text-sm font-medium hover:bg-carbon transition-colors">
-                        Log out
-                    </a>
+                <div class="flex flex-col gap-2">
+                    <div class="flex gap-2">
+                        <a href="{{ route('dashboard') }}"     class="flex-1 text-center border border-fog rounded-full py-2 text-sm font-medium hover:border-silver transition-colors">Dashboard</a>
+                        <a href="{{ route('host.bookings') }}" class="flex-1 text-center border border-fog rounded-full py-2 text-sm font-medium hover:border-silver transition-colors">Host</a>
+                    </div>
+                    <div class="flex gap-2">
+                        <a href="{{ route('profile.edit') }}" class="flex-1 text-center border border-fog rounded-full py-2 text-sm font-medium hover:border-silver transition-colors">Profile</a>
+                        <a href="{{ route('logout') }}"       class="flex-1 text-center bg-ink text-white rounded-full py-2 text-sm font-medium hover:bg-carbon transition-colors">Log out</a>
+                    </div>
                 </div>
             @endauth
         </div>
@@ -158,21 +162,20 @@
                 <div>
                     <p class="text-xs uppercase tracking-widest text-silver mb-4">Explore</p>
                     <ul class="space-y-2.5 text-sm text-silver">
-                        {{-- DYNAMIC: link to filtered listing routes --}}
-                        <li><a href="{{ url('/listings') }}"                class="hover:text-white transition-colors">All Listings</a></li>
-                        <li><a href="{{ url('/listings?type=apartment') }}" class="hover:text-white transition-colors">Apartments</a></li>
-                        <li><a href="{{ url('/listings?type=house') }}"     class="hover:text-white transition-colors">Houses</a></li>
-                        <li><a href="{{ url('/listings?type=studio') }}"    class="hover:text-white transition-colors">Studios</a></li>
-                        <li><a href="{{ url('/listings?type=villa') }}"     class="hover:text-white transition-colors">Villas</a></li>
+                        <li><a href="{{ route('listings.index') }}"                         class="hover:text-white transition-colors">All Listings</a></li>
+                        <li><a href="{{ route('listings.index', ['type' => 'apartment']) }}" class="hover:text-white transition-colors">Apartments</a></li>
+                        <li><a href="{{ route('listings.index', ['type' => 'house']) }}"     class="hover:text-white transition-colors">Houses</a></li>
+                        <li><a href="{{ route('listings.index', ['type' => 'studio']) }}"    class="hover:text-white transition-colors">Studios</a></li>
+                        <li><a href="{{ route('listings.index', ['type' => 'villa']) }}"     class="hover:text-white transition-colors">Villas</a></li>
                     </ul>
                 </div>
 
                 <div>
                     <p class="text-xs uppercase tracking-widest text-silver mb-4">Hosting</p>
                     <ul class="space-y-2.5 text-sm text-silver">
-                        <li><a href="{{ url('/host') }}"           class="hover:text-white transition-colors">Become a Host</a></li>
-                        <li><a href="{{ url('/host/resources') }}" class="hover:text-white transition-colors">Resources</a></li>
-                        <li><a href="{{ url('/host/dashboard') }}" class="hover:text-white transition-colors">Dashboard</a></li>
+                        <li><a href="{{ route('listings.create') }}" class="hover:text-white transition-colors">List your property</a></li>
+                        <li><a href="{{ route('host.bookings') }}"   class="hover:text-white transition-colors">Manage bookings</a></li>
+                        <li><a href="{{ route('host.earnings') }}"   class="hover:text-white transition-colors">Earnings</a></li>
                     </ul>
                 </div>
 

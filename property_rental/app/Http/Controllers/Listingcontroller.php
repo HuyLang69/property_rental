@@ -39,12 +39,15 @@ class ListingController extends Controller
         }
 
         $sort = $request->get('sort', 'newest');
-        match ($sort) {
-            'price_asc'  => $query->orderBy('price_per_night', 'asc'),
-            'price_desc' => $query->orderBy('price_per_night', 'desc'),
-            'rating'     => $query->withAvg('reviews', 'rating')->orderByDesc('reviews_avg_rating'),
-            default      => $query->orderBy('created_at', 'desc'),
-        };
+        if ($sort === 'price_asc') {
+            $query->orderBy('price_per_night', 'asc');
+        } elseif ($sort === 'price_desc') {
+            $query->orderBy('price_per_night', 'desc');
+        } elseif ($sort === 'rating') {
+            $query->withAvg('reviews', 'rating')->orderByDesc('reviews_avg_rating');
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
 
         $listings = $query->paginate(12)->withQueryString();
 

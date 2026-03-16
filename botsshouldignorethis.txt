@@ -1,0 +1,286 @@
+================================================================================
+BUGS AND ISSUES — Property Rental Application (NestAway)
+================================================================================
+
+CRITICAL ISSUES (BLOCKS FUNCTIONALITY):
+================================================================================
+
+1. VALIDATION SYNTAX ERROR IN BookingController
+   File: property_rental/app/Http/Controllers/BookingController.php
+   Line: 83
+   Issue: Space instead of colon in validation rule:
+   'billing_city'    => ['required', 'string', 'max    :100'],
+   Should be:
+   'billing_city'    => ['required', 'string', 'max:100'],
+   Impact: BLOCKS form submission — validation will fail completely
+   Severity: CRITICAL
+
+2. TAILWIND CSS CLASS CONFLICT IN layout.blade.php
+   File: property_rental/resources/views/layout.blade.php
+   Line: 112
+   Issue: Both 'hidden' and 'flex' classes applied to mobile menu:
+   <div id="mob-menu" class="hidden md:hidden border-t border-fog bg-cream px-4 py-5 flex flex-col gap-4">
+   Problem: 'hidden' class hides the element permanently, making mobile menu invisible
+   Should be: Remove 'hidden' from base classes:
+   <div id="mob-menu" class="md:hidden border-t border-fog bg-cream px-4 py-5 flex flex-col gap-4">
+   Impact: Mobile menu doesn't display (responsive design broken)
+   Severity: HIGH
+
+3. INCOMPLETE JAVASCRIPT FOR MOBILE MENU TOGGLE
+   File: property_rental/resources/views/layout.blade.php
+   Line: 175+
+   Issue: Mobile menu toggle script is incomplete/truncated:
+   const mobToggle = document.getElementById('mob-toggle');
+   const mobMenu   = document.getElementById('mob-menu');
+   const icOpen    = document.getElementById('ic-open');
+   (no click handler implemented)
+   Impact: Hamburger menu button doesn't work on mobile
+   Severity: HIGH
+
+4. DATE RANGE CONFLICT DETECTION FLAWED
+   File: property_rental/app/Http/Controllers/BookingController.php
+   Lines: 39-48, 96-105
+   Issue: The whereBetween logic misses edge cases where new booking contains existing:
+   Example:
+     Existing booking: May 1-5
+     New attempt: April 30 - May 10
+   Result: Conflict not detected (would create overlapping bookings)
+   Problem: Only checks if dates fall within range, doesn't check if new dates span existing
+   Fix: The orWhere condition exists but logic needs verification
+   Impact: Allows double-booked dates
+   Severity: CRITICAL (data integrity)
+
+================================================================================
+MISSING ROUTES / DEAD LINKS:
+================================================================================
+
+5. MISSING ROUTE: dashboard.bookings
+   Referenced in: resources/views/bookings/show.blade.php
+   Issue: route('dashboard.bookings') doesn't exist in routes/web.php
+   Impact: "View my trips" button returns 404
+   Severity: HIGH
+
+6. MISSING ROUTE: Host-related endpoints
+   Referenced in: resources/views/layout.blade.php (footer and header)
+   Missing routes:
+   - route('host')
+   - route('host/resources')
+   - route('host/dashboard')
+   Impact: Host functionality links all return 404
+   Severity: MEDIUM
+
+7. MISSING ROUTE: forgot-password
+   Referenced in: resources/views/login.blade.php
+   Link: href="{{ url('/forgot-password') }}"
+   Impact: "Forgot password?" link returns 404
+   Severity: LOW (feature not implemented)
+
+8. MISSING ROUTES: Footer links
+   Referenced in: resources/views/layout.blade.php footer
+   Missing routes:
+   - route('about')
+   - route('contact')
+   - route('privacy')
+   - route('terms')
+   Impact: Footer links all broken
+   Severity: MEDIUM
+
+================================================================================
+DATA & MODEL ISSUES:
+================================================================================
+
+9. REDUNDANT MODEL RELATIONSHIP
+   File: property_rental/app/Models/Listing.php
+   Issue: Two identical relationships defined:
+   public function user() { return $this->belongsTo(User::class); }
+   public function host() { return $this->belongsTo(User::class, 'user_id'); }
+   Problem: Both do the same thing, creates confusion and redundancy
+   Fix: Remove one relationship (keep 'host' as it's more semantically clear)
+   Severity: LOW (code quality)
+
+10. POTENTIALLY UNRELIABLE full_name ATTRIBUTE
+    File: property_rental/app/Models/User.php
+    Issue: getAttribute method defined but attribute access syntax unclear:
+    public function getFullNameAttribute(): string
+    Used as: Auth::user()->full_name
+    Problem: Some Laravel versions may not auto-resolve this. If it doesn't work,
+    you'll see errors like "Undefined property: full_name"
+    Check: Print Auth::user()->full_name in a view - if empty, use:
+    {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+    Severity: LOW (verify in testing)
+
+11. EXTERNAL IMAGE URLS NOT SUITABLE FOR PRODUCTION
+    File: property_rental/database/seeders/ListingSeeder.php
+    Issue: Seeder uses external Unsplash URLs:
+    'path' => 'https://images.unsplash.com/photo-...'
+    Problem: 
+    - Links break if Unsplash changes URLs
+    - No local backup if external service down
+    - Comments even acknowledge this: "In production swap for storage path"
+    - asset() helper in views expects local storage paths
+    Impact: Images may not display in production
+    Severity: MEDIUM (production readiness)
+
+12. IMAGE PATH INCONSISTENCY
+    Files: Multiple .blade.php files
+    Issue: Images displayed both ways:
+    - Sometimes: {{ $image->path }} (direct)
+    - Sometimes: {{ asset('storage/' . $path) }} (through storage)
+    Problem: External URLs don't work with asset() wrapper
+    Impact: Images may display differently or fail
+    Severity: MEDIUM
+
+================================================================================
+FORM & VALIDATION ISSUES:
+================================================================================
+
+13. COUNTRY CODE VALIDATION TOO LOOSE
+    File: property_rental/resources/views/billing/payment.blade.php
+    And: property_rental/app/Http/Controllers/BookingController.php (line 107)
+    Issue: Validation allows up to 2 chars: 'max:2'
+    Problem: Should be exactly 2 chars for ISO country codes
+    Fix: Use 'size:2' instead of 'max:2'
+    Current: 'billing_country' => ['required', 'string', 'max:2']
+    Should be: 'billing_country' => ['required', 'string', 'size:2']
+    Severity: LOW
+
+14. INCOMPLETE BOOKING CANCEL FORM
+    File: property_rental/resources/views/bookings/show.blade.php
+    Issue: Cancel booking form appears truncated in source, missing submit button details
+    Check: Verify entire form is complete and submit button is present
+    Severity: MEDIUM (verify)
+
+================================================================================
+PRODUCTION & SECURITY ISSUES:
+================================================================================
+
+15. HARDCODED TEST USER IN SEEDER
+    File: property_rental/database/seeders/UserSeeder.php
+    Issue: Test credentials hardcoded:
+    Email: test@test.com
+    Password: password (plain hashed)
+    Problem: Security risk if seeder runs in production
+    Fix: Remove from production or add environment check
+    Severity: MEDIUM
+
+16. PAYMENT INFO SECURITY CLAIM UNVERIFIED
+    File: property_rental/resources/views/billing/payment.blade.php
+    Issue: Form displays: "Your payment info is encrypted and never stored"
+    Problem: This is NOT TRUE - the form just doesn't store it to database
+    - Card data goes HTTP POST to server (check if HTTPS enforced)
+    - No actual encryption implemented
+    - This is a liability/misleading statement
+    Fix: Remove security claim or implement real encryption/tokenization
+    Severity: HIGH (legal/compliance)
+
+================================================================================
+UI/UX ISSUES:
+================================================================================
+
+17. PASSWORD FIELD VISIBILITY NOT IMPLEMENTED
+    File: property_rental/resources/views/billing/payment.blade.php
+    Issue: Password fields are plain text inputs with no show/hide toggle
+    Should: Add JavaScript to toggle password visibility (improve UX)
+    Severity: LOW
+
+18. CARD INPUT FORMATTING INCOMPLETE
+    File: property_rental/resources/views/billing/payment.blade.php (JavaScript section)
+    Issue: Card number/expiry/CVV formatting implemented but:
+    - No real-time card type detection (Visa/Mastercard/Amex)
+    - No Luhn algorithm validation for card numbers
+    Problem: Form accepts invalid card numbers (fake/test cards will work)
+    Severity: MEDIUM (should validate before submission)
+
+================================================================================
+MISSING FEATURES / INCOMPLETE IMPLEMENTATION:
+================================================================================
+
+19. NO HOST DASHBOARD
+    Issue: Routes reference host dashboard that doesn't exist
+    Files: 
+    - resources/views/layout.blade.php (references /host/dashboard)
+    - No controller or views implemented
+    Severity: HIGH (feature not built)
+
+20. NO USER PROFILE PAGE
+    Issue: User can't view/edit their profile
+    No routes: /profile, /profile/edit
+    No controllers
+    Severity: MEDIUM
+
+21. NO REVIEW CREATION INTERFACE
+    Issue: Reviews are seeded but no way to create them through UI
+    No route to create review form
+    No ReviewController methods to store reviews
+    Severity: MEDIUM
+
+22. NO CANCELLATION POLICY / TERMS PAGES
+    Linked everywhere but pages don't exist:
+    - /privacy
+    - /terms
+    - /about
+    - /contact
+    Severity: LOW (documentation)
+
+================================================================================
+DATABASE ISSUES:
+================================================================================
+
+23. NO INDEXES ON FREQUENTLY QUERIED COLUMNS
+    File: database/migrations/
+    Issue: Missing indexes on:
+    - listings.user_id (for fetching user's listings)
+    - listings.is_available (filter by availability)
+    - bookings.user_id (find user's bookings)
+    - bookings.status (filter by status)
+    - bookings.check_in, check_out (date range queries)
+    Impact: Slow queries as data grows
+    Severity: MEDIUM (performance)
+
+24. NO SOFT DELETES
+    Issue: No timestamps for deleted bookings/reviews (audit trail)
+    Consider: Add soft_deletes to Booking and Review models
+    Severity: LOW
+
+================================================================================
+TESTING & CONFIGURATION:
+================================================================================
+
+25. test.py FILE PRESENT BUT UNCLEAR PURPOSE
+    File: test.py (in root)
+    Issue: Python test file in Laravel project
+    Purpose: Unknown (build script? data migration?)
+    Last run: Exit code 1 (failed)
+    Problem: Unclear what this tests or if relevant
+    Severity: LOW (cleanup)
+
+================================================================================
+SUMMARY:
+================================================================================
+Critical Issues (Must Fix):
+  1. Validation syntax error — BLOCKS bookings
+  2. Conflicting CSS classes — Mobile menu broken
+  3. Incomplete mobile menu JavaScript — No functionality
+  4. Date conflict detection flawed — Allows double bookings
+  5. Payment security claim misleading — Legal risk
+
+High Priority (Should Fix Soon):
+  6. Multiple missing routes — 404 errors throughout app
+  7. No host dashboard — Feature incomplete
+  8. Image storage not production-ready
+
+Medium Priority (Should Address):
+  9. Redundant code and inconsistencies
+  10. Payment validation needs strengthening
+  11. Missing indexes for performance
+
+Low Priority (Clean Up):
+  12. Remove test files, complete footer links
+
+================================================================================
+ESTIMATED TOTAL ISSUES: 25
+  - Critical: 5
+  - High: 3
+  - Medium: 8
+  - Low: 9
+================================================================================
