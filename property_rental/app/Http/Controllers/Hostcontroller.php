@@ -10,6 +10,17 @@ use Illuminate\Support\Facades\Auth;
 
 class HostController extends Controller
 {
+    // /host/listings — all host's listings
+    public function listings()
+    {
+        $listings = Listing::with(['coverImage', 'bookings'])
+            ->where('user_id', Auth::id())
+            ->withCount('bookings')
+            ->orderByDesc('created_at')
+            ->get();
+
+        return view('host.listings', compact('listings'));
+    }
     // /host/dashboard — redirect to bookings
     public function index()
     {

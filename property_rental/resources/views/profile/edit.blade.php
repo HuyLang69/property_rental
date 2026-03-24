@@ -86,6 +86,15 @@
         <div class="bg-white border border-fog rounded-2xl p-6 flex flex-col gap-5">
             <h2 class="text-sm font-semibold text-ink uppercase tracking-widest">Change password</h2>
 
+            @if (session('password_success'))
+            <div class="flex items-center gap-3 bg-white border border-fog rounded-xl px-4 py-3">
+                <svg class="w-4 h-4 text-ink shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                </svg>
+                <p class="text-sm text-ink">{{ session('password_success') }}</p>
+            </div>
+            @endif
+
             <div class="flex flex-col gap-1.5">
                 <label class="text-xs font-medium text-slate uppercase tracking-widest">Current password</label>
                 <input autocomplete="off" type="password" name="current_password"

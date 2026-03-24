@@ -93,6 +93,9 @@
                     @endguest
 
                     @auth
+                        @if(Auth::user()->is_admin)
+                            <a href="{{ route('admin.dashboard') }}" class="nav-link hover:text-ink transition-colors font-semibold text-red-600">Admin</a>
+                        @endif
                         <a href="{{ route('dashboard') }}"    class="nav-link hover:text-ink transition-colors">Dashboard</a>
                         <a href="{{ route('host.bookings') }}" class="nav-link hover:text-ink transition-colors">Host</a>
                         <a href="{{ route('profile.edit') }}" class="nav-link hover:text-ink transition-colors">Profile</a>
@@ -130,6 +133,11 @@
 
             @auth
                 <div class="flex flex-col gap-2">
+                    @if(Auth::user()->is_admin)
+                    <div class="flex gap-2">
+                        <a href="{{ route('admin.dashboard') }}" class="flex-1 text-center border-2 border-red-200 text-red-600 rounded-full py-2 text-sm font-semibold hover:border-red-300 transition-colors">Admin Panel</a>
+                    </div>
+                    @endif
                     <div class="flex gap-2">
                         <a href="{{ route('dashboard') }}"     class="flex-1 text-center border border-fog rounded-full py-2 text-sm font-medium hover:border-silver transition-colors">Dashboard</a>
                         <a href="{{ route('host.bookings') }}" class="flex-1 text-center border border-fog rounded-full py-2 text-sm font-medium hover:border-silver transition-colors">Host</a>

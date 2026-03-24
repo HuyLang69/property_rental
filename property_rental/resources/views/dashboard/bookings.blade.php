@@ -24,26 +24,15 @@
 
     {{-- Filter tabs --}}
     @php
-        $filter   = request('filter', 'upcoming');
-        $now      = now();
-        $upcoming = $bookings->filter(fn($b) => $b->status !== 'cancelled' && $b->check_out->isFuture());
-        $past     = $bookings->filter(fn($b) => $b->status === 'confirmed'  && $b->check_out->isPast());
-        $cancelled= $bookings->filter(fn($b) => $b->status === 'cancelled');
-
-        $filtered = match($filter) {
-            'past'      => $past,
-            'cancelled' => $cancelled,
-            'all'       => $bookings,
-            default     => $upcoming,
-        };
+        $now = now();
     @endphp
 
     <div class="flex gap-1 mb-6 border-b border-fog overflow-x-auto">
         @foreach ([
-            'upcoming'  => 'Upcoming ('  . $upcoming->count()  . ')',
-            'past'      => 'Past ('      . $past->count()      . ')',
-            'cancelled' => 'Cancelled (' . $cancelled->count() . ')',
-            'all'       => 'All ('       . $bookings->count()  . ')',
+            'upcoming'  => 'Upcoming ('  . $counts['upcoming']  . ')',
+            'past'      => 'Past ('      . $counts['past']      . ')',
+            'cancelled' => 'Cancelled (' . $counts['cancelled'] . ')',
+            'all'       => 'All ('       . $counts['all']       . ')',
         ] as $key => $label)
         <a href="{{ route('dashboard.bookings', ['filter' => $key]) }}"
            class="whitespace-nowrap px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px
@@ -53,7 +42,7 @@
         @endforeach
     </div>
 
-    @if ($filtered->isEmpty())
+    @if ($bookings->isEmpty())
         <div class="flex flex-col items-center justify-center py-24 text-center">
             <svg class="w-12 h-12 text-fog mb-4" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5"/>
@@ -82,7 +71,7 @@
         </div>
     @else
         <div class="flex flex-col gap-4">
-            @foreach ($filtered as $booking)
+            @foreach ($bookings as $booking)
             <div class="bg-white border border-fog rounded-2xl overflow-hidden flex flex-col sm:flex-row">
 
                 <div class="w-full sm:w-44 h-40 sm:h-auto shrink-0 bg-fog overflow-hidden">
@@ -189,6 +178,10 @@
             @endif
 
             @endforeach
+        </div>
+
+        <div class="mt-6">
+            {{ $bookings->links() }}
         </div>
     @endif
 
