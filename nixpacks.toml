@@ -2,10 +2,13 @@
 nixPkgs = ["php82", "php82Extensions.pdo", "php82Extensions.pdo_sqlite", "php82Extensions.mbstring", "php82Extensions.tokenizer", "php82Extensions.xml", "php82Extensions.ctype", "php82Extensions.fileinfo", "php82Extensions.openssl", "php82Extensions.sqlite3", "composer"]
 
 [phases.install]
-cmds = ["cd property_rental && composer install --no-dev --optimize-autoloader"]
+directory = "property_rental"
+cmds = ["composer install --no-dev --optimize-autoloader"]
 
 [phases.build]
-cmds = ["cd property_rental && php artisan config:cache", "cd property_rental && php artisan route:cache", "cd property_rental && php artisan view:cache"]
+directory = "property_rental"
+cmds = ["php artisan config:cache", "php artisan route:cache", "php artisan view:cache"]
 
 [start]
-cmd = "cd property_rental && php artisan migrate --force && php artisan storage:link && php artisan serve --host=0.0.0.0 --port=$PORT"
+directory = "property_rental"
+cmd = "php artisan migrate --force && php artisan storage:link && php artisan serve --host=0.0.0.0 --port=$PORT"
