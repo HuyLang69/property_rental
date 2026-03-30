@@ -35,7 +35,7 @@
 
                 <div class="w-full sm:w-44 h-40 sm:h-auto shrink-0 bg-fog overflow-hidden">
                     @if ($listing->coverImage)
-                        <img src="{{ asset('storage/' . $listing->coverImage->path) }}" alt="{{ $listing->title }}" class="w-full h-full object-cover" />
+                        <img src="{{ $listing->coverImage->url }}" alt="{{ $listing->title }}" class="w-full h-full object-cover" />
                     @else
                         <div class="w-full h-full bg-fog flex items-center justify-center">
                             <svg class="w-8 h-8 text-silver" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">

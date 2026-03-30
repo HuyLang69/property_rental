@@ -38,7 +38,7 @@
 
         <div style="grid-row: span 2; overflow:hidden;">
             @if ($images->count() > 0)
-                <img src="{{ $images[0]->path }}" alt="{{ $listing->title }}" class="w-full h-full object-cover" />
+                <img src="{{ $images[0]->url }}" alt="{{ $listing->title }}" class="w-full h-full object-cover" />
             @else
                 <div class="w-full h-full bg-fog flex items-center justify-center">
                     <svg class="w-12 h-12 text-silver" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909"/></svg>
@@ -49,7 +49,7 @@
         @foreach ([1, 2, 3, 4] as $i)
         <div style="overflow:hidden;">
             @if ($images->count() > $i)
-                <img src="{{ $images[$i]->path }}" alt="{{ $listing->title }}" class="w-full h-full object-cover" loading="lazy" />
+                <img src="{{ $images[$i]->url }}" alt="{{ $listing->title }}" class="w-full h-full object-cover" loading="lazy" />
             @else
                 <div class="w-full h-full bg-fog"></div>
             @endif

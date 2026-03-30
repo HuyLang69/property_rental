@@ -165,7 +165,7 @@
         <a href="{{ route('listings.show', $listing->id) }}" class="lift group bg-white rounded-2xl overflow-hidden border border-fog flex flex-col">
             <div class="img-zoom relative" style="aspect-ratio:4/3;">
                 @if ($listing->coverImage)
-                    <img src="{{ $listing->coverImage->path }}" alt="{{ $listing->title }}" class="w-full h-full object-cover" loading="lazy" />
+                    <img src="{{ $listing->coverImage->url }}" alt="{{ $listing->title }}" class="w-full h-full object-cover" loading="lazy" />
                 @else
                     <div class="w-full h-full bg-fog flex items-center justify-center">
                         <svg class="w-10 h-10 text-silver" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909"/></svg>
@@ -311,7 +311,7 @@
             <a href="{{ route('listings.show', $listing->id) }}" class="lift group bg-cream rounded-2xl overflow-hidden border border-fog flex flex-col">
                 <div class="img-zoom aspect-[4/3] bg-fog relative">
                     @if ($listing->coverImage)
-                        <img src="{{ $listing->coverImage->path }}" alt="{{ $listing->title }}" class="w-full h-full object-cover" loading="lazy" />
+                        <img src="{{ $listing->coverImage->url }}" alt="{{ $listing->title }}" class="w-full h-full object-cover" loading="lazy" />
                     @else
                         <div class="w-full h-full bg-fog flex items-center justify-center">
                             <svg class="w-8 h-8 text-silver" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909"/></svg>

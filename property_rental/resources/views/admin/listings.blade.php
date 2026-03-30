@@ -34,7 +34,7 @@
                             <div class="flex items-center gap-3">
                                 <div class="w-12 h-12 rounded-xl bg-fog flex items-center justify-center shrink-0 overflow-hidden">
                                     @if ($listing->coverImage)
-                                        <img src="{{ asset('storage/' . $listing->coverImage->path) }}" alt="" class="w-full h-full object-cover">
+                                        <img src="{{ $listing->coverImage->url }}" alt="" class="w-full h-full object-cover">
                                     @else
                                         <svg class="w-5 h-5 text-silver" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909"/></svg>
                                     @endif

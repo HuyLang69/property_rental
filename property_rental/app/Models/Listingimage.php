@@ -35,6 +35,9 @@ class ListingImage extends Model
     // Returns the full public URL for use in <img src="">
     public function getUrlAttribute(): string
     {
+        if (str_starts_with($this->path, 'http')) {
+            return $this->path;
+        }
         return asset('storage/' . $this->path);
     }
 }
