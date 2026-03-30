@@ -1,14 +1,11 @@
 [phases.setup]
-nixPkgs = ["php82", "php82Extensions.pdo", "php82Extensions.pdo_sqlite", "php82Extensions.mbstring", "php82Extensions.tokenizer", "php82Extensions.xml", "php82Extensions.ctype", "php82Extensions.fileinfo", "php82Extensions.openssl", "php82Extensions.sqlite3", "composer"]
+nixPkgs = ["php82", "composer"]
 
 [phases.install]
-directory = "property_rental"
 cmds = ["composer install --no-dev --optimize-autoloader"]
 
 [phases.build]
-directory = "property_rental"
 cmds = ["php artisan config:cache", "php artisan route:cache", "php artisan view:cache"]
 
 [start]
-directory = "property_rental"
 cmd = "php artisan migrate --force && php artisan storage:link && php artisan serve --host=0.0.0.0 --port=$PORT"
