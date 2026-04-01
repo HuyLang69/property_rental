@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\Listing;
 use App\Models\ListingImage;
 use Illuminate\Http\Request;
