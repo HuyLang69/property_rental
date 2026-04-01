@@ -9,7 +9,17 @@ use App\Http\Controllers\ListingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
+// ── Health Check for Railway ──────────────────────────────────
+Route::get('/health', function () {
+    return response()->json([
+        'status' => 'ok',
+        'app' => config('app.name'),
+        'env' => config('app.env'),
+        'timestamp' => now()
+    ], 200);
+});
 // ── Home ───────────────────────────────────────────────────────
 Route::get('/', function () {
     $featured = \App\Models\Listing::with(['coverImage', 'reviews'])
@@ -99,7 +109,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/bookings', [AdminController::class, 'bookings'])->name('bookings');
 });
 
-use Illuminate\Support\Facades\Artisan;
+
 
 Route::get('/run-migrations', function () {
     // Only allow this in production if you add a secret token
