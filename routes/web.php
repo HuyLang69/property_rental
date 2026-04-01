@@ -98,3 +98,23 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/listings/{listing}', [AdminController::class, 'destroyListing'])->name('destroyListing');
     Route::get('/bookings', [AdminController::class, 'bookings'])->name('bookings');
 });
+
+use Illuminate\Support\Facades\Artisan;
+
+Route::get('/run-migrations', function () {
+    // Only allow this in production if you add a secret token
+    if (request()->get('token') !== env('MIGRATION_TOKEN')) {
+        return response()->json(['error' => 'Unauthorized'], 403);
+    }
+    
+    try {
+        Artisan::call('migrate', ['--force' => true]);
+        Artisan::call('storage:link');
+        return response()->json([
+            'message' => 'Migrations completed!',
+            'output' => Artisan::output()
+        ], 200);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+});
