@@ -11,6 +11,29 @@ use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
+// ── Fresh Migrations (TEMPORARY - DELETE AFTER USE) ──
+Route::get('/fresh-migrations', function () {
+    if (request()->get('token') !== env('MIGRATION_TOKEN')) {
+        return response()->json(['error' => 'Unauthorized'], 403);
+    }
+    
+    try {
+        // Drop all tables and re-migrate
+        \Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--force' => true]);
+        \Illuminate\Support\Facades\Artisan::call('storage:link');
+        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+        
+        return response()->json([
+            'message' => '✅ Database reset complete! All tables recreated.',
+            'output' => \Illuminate\Support\Facades\Artisan::output()
+        ], 200);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ], 500);
+    }
+})->withoutMiddleware(['web', 'auth']);
 // ── Health Check for Railway (MUST bypass middleware) ──
 Route::get('/health', function () {
     return response('OK', 200)
