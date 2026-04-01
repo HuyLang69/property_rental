@@ -1,5 +1,5 @@
 <?php
-
+// FIXED: Added Controller import - [YOUR NAME] [CURRENT DATE]
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;  // ← ADD THIS LINE!
