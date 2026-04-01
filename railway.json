@@ -4,18 +4,13 @@
     "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand": "php artisan migrate --force && php artisan storage:link && php artisan serve --host=0.0.0.0 --port=$PORT",
-    "healthcheckPath": "/"
+    "startCommand": "php artisan storage:link && php artisan serve --host=0.0.0.0 --port=$PORT",
+    "healthcheckPath": "/",
+    "healthcheckTimeout": 300
   },
-  "plugins": [
-    {
-      "name": "mysql"
-    }
-  ],
   "variables": {
     "APP_ENV": "production",
-    "APP_DEBUG": "false",
-    "DB_CONNECTION": "mysql",
-    "FILESYSTEM_DRIVER": "local"
+    "APP_DEBUG": "true",
+    "DB_CONNECTION": "mysql"
   }
 }
