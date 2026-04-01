@@ -16,7 +16,7 @@
     }
   },
   "deploy": {
-    "startCommand": "php artisan migrate:fresh --force && php artisan storage:link && php artisan serve --host=0.0.0.0 --port=$PORT",
+    "startCommand": "php artisan migrate --force && php artisan storage:link && php artisan serve --host=0.0.0.0 --port=$PORT",
     "healthcheckPath": "/health",
     "healthcheckTimeout": 600,
     "restartPolicyType": "ON_FAILURE",
