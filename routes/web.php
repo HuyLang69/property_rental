@@ -11,15 +11,11 @@ use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
-// ── Health Check for Railway ──────────────────────────────────
+// ── Health Check for Railway (MUST bypass middleware) ──
 Route::get('/health', function () {
-    return response()->json([
-        'status' => 'ok',
-        'app' => config('app.name'),
-        'env' => config('app.env'),
-        'timestamp' => now()
-    ], 200);
-});
+    return response('OK', 200)
+        ->header('Content-Type', 'text/plain');
+})->withoutMiddleware(['web', 'auth']);
 // ── Home ───────────────────────────────────────────────────────
 Route::get('/', function () {
     $featured = \App\Models\Listing::with(['coverImage', 'reviews'])
