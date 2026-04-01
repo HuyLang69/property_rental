@@ -28,6 +28,8 @@
     "APP_URL": "https://${RAILWAY_PUBLIC_DOMAIN}",
     "DB_CONNECTION": "mysql",
     "SESSION_DRIVER": "cookie",
+    "SESSION_SECURE_COOKIE": "false",
+    "SESSION_SAME_SITE": "lax",
     "CACHE_STORE": "array",
     "QUEUE_CONNECTION": "sync",
     "MIGRATION_TOKEN": "change-this-to-something-secret-123"
