@@ -9,14 +9,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
+            // Add first_name and last_name
             $table->string('first_name')->nullable()->after('id');
             $table->string('last_name')->nullable()->after('first_name');
+            
+            // ADD THIS LINE - Make name column nullable
+            $table->string('name')->nullable()->change();
         });
     }
 
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->string('name')->nullable(false)->change();
             $table->dropColumn(['first_name', 'last_name']);
         });
     }
