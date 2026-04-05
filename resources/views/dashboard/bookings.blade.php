@@ -76,7 +76,7 @@
 
                 <div class="w-full sm:w-44 h-40 sm:h-auto shrink-0 bg-fog overflow-hidden">
                     @if ($booking->listing->coverImage)
-                        <img src="{{ $booking->listing->coverImage->path }}"
+                        <img src="{{ $booking->listing->coverImage->url }}"
                              alt="{{ $booking->listing->title }}"
                              class="w-full h-full object-cover" />
                     @else
