@@ -23,7 +23,14 @@
             <div class="bg-white border border-fog rounded-2xl p-5 mb-6 flex items-center gap-4">
                 <div class="w-20 h-16 rounded-xl overflow-hidden shrink-0 bg-fog">
                     @if ($listing->coverImage)
-                        <img src="{{ $listing->coverImage->path }}" class="w-full h-full object-cover" />
+                        <img src="{{ $listing->coverImage->url }}" 
+                             alt="{{ $listing->title }}"
+                             class="w-full h-full object-cover"
+                             onerror="this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=200&h=160&fit=crop'">
+                    @else
+                        <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=200&h=160&fit=crop" 
+                             alt="Property"
+                             class="w-full h-full object-cover">
                     @endif
                 </div>
                 <div class="flex-1 min-w-0">

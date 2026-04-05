@@ -32,7 +32,14 @@
         <div class="p-6 border-b border-fog flex items-center gap-4">
             <div class="w-20 h-16 rounded-xl overflow-hidden bg-fog shrink-0">
                 @if ($booking->listing->coverImage)
-                    <img src="{{ $booking->listing->coverImage->path }}" class="w-full h-full object-cover" />
+                    <img src="{{ $booking->listing->coverImage->url }}" 
+                         alt="{{ $booking->listing->title }}"
+                         class="w-full h-full object-cover"
+                         onerror="this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=200&h=160&fit=crop'">
+                @else
+                    <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=200&h=160&fit=crop" 
+                         alt="Property"
+                         class="w-full h-full object-cover">
                 @endif
             </div>
             <div>
