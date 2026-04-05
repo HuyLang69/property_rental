@@ -1,8 +1,8 @@
 <?php
-// FIXED: Added Controller import - [YOUR NAME] [CURRENT DATE]
+
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;  // ← ADD THIS LINE!
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,11 +17,9 @@ class AuthController extends Controller
 
     public function showRegister()
     {
-        // Redirect away if already logged in
         if (Auth::check()) {
             return redirect()->route('home');
         }
-
         return view('register');
     }
 
@@ -42,10 +40,7 @@ class AuthController extends Controller
             'password'   => Hash::make($request->password),
         ]);
 
-        // Log in immediately after registering
         Auth::login($user);
-
-        // Regenerate session to prevent session fixation
         $request->session()->regenerate();
 
         return redirect()->route('home')->with('success', 'Welcome to NestAway, ' . $user->first_name . '!');
@@ -58,7 +53,6 @@ class AuthController extends Controller
         if (Auth::check()) {
             return redirect()->route('home');
         }
-
         return view('login');
     }
 
@@ -69,7 +63,6 @@ class AuthController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        // Rate limiting — max 5 attempts per email per minute
         $key = 'login.' . Str::lower($request->email) . '.' . $request->ip();
 
         if (RateLimiter::tooManyAttempts($key, 5)) {
@@ -83,17 +76,18 @@ class AuthController extends Controller
         $remember    = $request->boolean('remember');
 
         if (Auth::attempt($credentials, $remember)) {
-            // Clear rate limiter on success
             RateLimiter::clear($key);
-
-            // Regenerate session to prevent session fixation
             $request->session()->regenerate();
 
-            // Redirect to intended page or home
+            // ✅ REDIRECT ADMIN TO ADMIN DASHBOARD
+            $user = Auth::user();
+            if ($user->is_admin) {
+                return redirect()->route('admin.dashboard');
+            }
+
             return redirect()->intended(route('home'));
         }
 
-        // Increment failed attempts
         RateLimiter::hit($key, 60);
 
         return back()
@@ -106,11 +100,8 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
-
-        // Invalidate session and regenerate CSRF token
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
         return redirect()->route('home');
     }
 }
