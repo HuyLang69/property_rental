@@ -16,6 +16,7 @@ class UserSeeder extends Seeder
             'email'      => 'test@test.com',
             'password'   => bcrypt('password'),
             'bio'        => 'I am the test user.',
+            'is_admin'   => true,  // ← ADD THIS LINE!
         ]);
 
         // 9 additional random users
